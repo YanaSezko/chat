@@ -2,26 +2,27 @@ import { useState } from 'react'
 import axios from 'axios'
 
 
-export function ToJoin({onLogin}) {
+export function ToJoin({ onLogin }) {
     const [roomId, setRoomId] = useState('')
     const [userName, setUserName] = useState('')
     const [isLoading, setLoading] = useState(false)
 
 
-    const onEnter = async() => {
-        if(!roomId || !userName){
+    const onEnter = async () => {
+        if (!roomId || !userName) {
             alert('Все поля должны быть заполненны')
         }
-        setLoading(true)
-        await axios.post('/rooms', {
+        const obj = {
             roomId,
             userName
-        })
-        onLogin()
+        };
+        setLoading(true)
+        await axios.post('/rooms', obj);
+        onLogin(obj)
     }
 
     return (
-        <div className="row">
+        <div className="row join-block">
             <input
                 type="text"
                 placeholder="Room ID"
@@ -35,7 +36,7 @@ export function ToJoin({onLogin}) {
                 onChange={(e) => setUserName(e.target.value)}
             />
             <button disabled={isLoading} onClick={onEnter} className="btn btn-success">
-                {isLoading?'ВХОД...':'ВОЙТИ'}
+                {isLoading ? 'ВХОД...' : 'ВОЙТИ'}
             </button>
         </div>
     )
